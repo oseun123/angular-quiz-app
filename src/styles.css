@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+.answer{
+	padding: 15px 20px;
+	border-radius: 10px;
+	border: 1px solid #bbb;
+}
+.answer:hover{
+	cursor: pointer;
+}
+.image-selected{
+	border:3px solid #56afdc;
+	/*transform: scale(0.5);*/
+}
+.image-answer{
+	cursor:pionter;
+	/*height: 20%;*/
+	width: 100%;
+	overflow:hidden;
+	border-radius: 10px;
+	margin-bottom: 20px;
+
+}
+.image-answer img{
+	width:100%;
+	height: auto;
+}
+.image-answer.bg-success{
+	border: 3px solid #5ea640;
+}
+.image-answer.bg-danger{
+	border: 3px solid #b74848;
+}

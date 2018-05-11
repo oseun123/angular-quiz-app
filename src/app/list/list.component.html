@@ -1,0 +1,76 @@
+<div class="row"  *ngIf="quizActive  || resultActive ">
+	<form class="form-inline well well-sm clearfix" >
+		<span class="glyphicon glyphicon-search"></span>
+		<input type="text" name="search" placeholder="Search..." [(ngModel)]="search" class="form-control">
+		<button class="btn btn-warning btn-sm pull-right" (click)="activateQuiz()" >
+			<strong>Start Quiz</strong>
+		</button>
+	</form>
+	
+	<div class="col-sm-6"  *ngFor="let turtle of turtlesData  | filter:search" >
+		<div class="well well-sm" >
+			<div class="row">
+				<div class="col-md-6" >
+					<img [src]="turtle.image_url" class="img-rounded img-responsive" width="100%">
+				</div>
+				<div class="col-md-6" >
+					<h4> {{ turtle.type }} </h4>
+					<p><strong>Locations: </strong>{{turtle.locations}}
+					</p>
+					<p><strong>Size: </strong>{{turtle.size}}
+					</p>
+					<p><strong>Diet: </strong>{{turtle.diet}}
+					</p>
+					<p><strong>Life Span: </strong>{{turtle.lifespan}}
+					</p>
+					<button  class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#turtle-info" (click)="changeActiveTurtle(turtle)" >Learn More</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade details-1" tabindex="-1" role="dialog" aria-labelledby="details-1" aria-hidden="true" id="turtle-info" data-backdrop="static"  data-keyboard="false">
+		  <div class="modal-dialog modal-lg " >
+		    <div class="modal-content">
+		      <div class="modal-header">
+		      	<button class="close" type="button" aria-label="close"  data-dismiss="modal" ><span aria-hidden="true" >&times;</span></button>
+
+		      	<h3 class="modal-title text-center  "> {{ activeTurtle.type }}</h3>
+		      </div>
+
+		      <div class="modal-body">
+		      		<div class="container-fluid">
+		      			<div class="row">
+		      				<div class="col-xs-8 col-xs-offset-2">
+		      					<img [src]="activeTurtle.image_url" class="img-responsive  img-rounded"  width="100%" >
+		      				</div>
+		      					
+		      			</div>
+		      			<div class="row" style="margin-top: 25px;" >
+		      				<p><strong>Locations: </strong>{{activeTurtle.locations}}
+		      				</p>
+		      				<p><strong>Size: </strong>{{activeTurtle.size}}
+		      				</p>
+		      				<p><strong>Diet: </strong>{{activeTurtle.diet}}
+		      				</p>
+		      				<p><strong>Life Span: </strong>{{activeTurtle.lifespan}}
+		      				</p>
+
+		      				<p style="text-align: justify;">
+		      					{{ activeTurtle.description}}
+		      				</p>
+		      				
+		      			</div>
+		      		</div>
+		      		</div>
+		      	
+		        <div class="modal-footer">
+		      	<button class="btn btn-danger btn-sm" data-dismiss="modal" >Close</button>
+		      </div> 
+		      </div>
+		     
+
+
+		    </div>
+		  </div>
+</div>

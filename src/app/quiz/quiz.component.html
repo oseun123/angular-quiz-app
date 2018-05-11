@@ -1,0 +1,155 @@
+<div  *ngIf="!quizActive" >
+	<div *ngIf="!resultActive">
+	<div class="row">
+		<div class="col-xs-8">
+			{{ errorMsg }}
+			<h4>Progress:</h4>
+			<div class="btn-toolbar" >
+				<button class="btn btn-sm"  [ngClass]="{'btn-info': question.selected !== null , 'btn-danger': question.selected === null}" *ngFor=" let question of quizQuestions; let i=index "  (click)="setActiveQuestion(i)" >
+					<span class="glyphicon"  [ngClass]="{'glyphicon-pencil':question.selected !== null , 'glyphicon-question-sign': question.selected === null}" ></span>
+				</button>
+				
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div class="row">
+				<h4>Legend:</h4>
+				<div class="col-sm-4">
+					<button class="btn btn-info  btn-sm" >
+						<span class="glyphicon glyphicon-pencil"></span>
+					</button>
+					<p>Answered</p>
+				</div>
+				<div class="col-sm-4">
+					<button class="btn btn-danger btn-sm " >
+						<span class="glyphicon glyphicon-question-sign"></span>
+					</button>
+					<p>Unanswered</p>
+				</div>
+				<div class="col-sm-4">
+					<button class="btn btn-info btn-sm" (click)="showHttp()"  >Click me </button>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="alert alert-danger" *ngIf="error">
+			Error! You have not answered all of the questions!
+			<button class="close"  (click)="error=false" >&times;</button>
+		</div>
+		<h3>Question:</h3>
+		 <div class=" well well-sm"  *ngIf="!finalize" >
+		 	<div class="row">
+		 		<div class="col-xs-12">
+		 			<h4>{{ activeQuestion+1+". "+quizQuestions[activeQuestion].text}}</h4>
+		 			<div class="row" *ngIf="quizQuestions[activeQuestion].type ==='text'" >
+		 				<div class="col-sm-6" *ngFor="let  answer of quizQuestions[activeQuestion].possibilities; let i=index " >
+		 					<h5 class="answer" [ngClass]="{'bg-info': i === quizQuestions[activeQuestion].selected }" (click)="selectAnswer(i)" > {{answer.answer}}</h5>
+		 				</div>
+		 			</div>
+		 			<div class="row"  *ngIf="quizQuestions[activeQuestion].type ==='image'" >
+		 				
+		 				<div  class="col-sm-6 " *ngFor="let  answer of quizQuestions[activeQuestion].possibilities;  let i=index" >
+		 					
+		 					<div  class="image-answer" [ngClass]="{'image-selected': i === quizQuestions[activeQuestion].selected }" (click)="selectAnswer(i)" >
+		 						<img [src]="answer.answer"  >
+		 			
+		 				</div>
+		 				</div>
+		 		</div>
+		 	<button class="btn btn-warning btn-sm" (click)="questionAnswered()" >Continue</button>
+		 	</div>
+		 </div>
+
+	
+
+	</div>
+		 <div class="well well-sm" *ngIf="finalize" >
+		 	<div class="row">
+		 		<div class="col-xs-12">
+		 			<h3>Are you sure you want to submit your answers?</h3>
+		 			<button class="btn btn-success" (click)="finalizeAnswer()" >Yes</button>
+		 			<button  class="btn btn-danger" (click)="finalize=false" >No</button>
+		 		</div>
+		 	</div>
+		 	
+		 </div>
+</div>
+</div>
+
+<div  *ngIf="resultActive">
+	<div class="row">
+		<div class="col-xs-8">
+			<h2>Results:</h2>
+			<div class="btn-toolbar">
+				<button class="btn btn-sm"  [ngClass]="{'btn-success': question.correct , 'btn-danger': !question.correct}"   *ngFor=" let question of quizQuestions; let i=index "  (click)="rsetActiveQuestion(i)" >
+					<span class="glyphicon"  [ngClass]="{'glyphicon-ok':question.correct , 'glyphicon-remove': !question.correct}"  ></span>
+				</button>
+				
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div class="row">
+				<h4>Legend</h4>
+				<div class="col-sm-4">
+					<button class="btn-success btn btn-sm" >
+						<span  class="glyphicon glyphicon-ok"></span>
+					</button>
+					<p>Correct</p>
+				</div>
+				<div class="col-sm-4">
+					<button class="btn-danger btn btn-sm" >
+						<span  class="glyphicon glyphicon-remove"></span>
+					</button>
+					<p>Incorrect</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12"  style="margin-top: 25px">
+			<h3>You Scorced {{ numCorrect }} / {{   quizQuestions.length }}</h3>
+
+			<h3><strong>{{  calculatePercentage() }}%</strong></h3>
+		</div>
+
+	</div>
+
+
+	<div  class="row" >
+		<h3>Question</h3>
+		<div class="well well-sm">
+			<div class="row">
+				<div class="col-xs-12">
+					<h4>{{ractiveQuestion +1 +". "+quizQuestions[ractiveQuestion].text}}</h4>
+					<div class="row"   *ngIf="quizQuestions[ractiveQuestion].type ==='text'">
+						<div class="col-sm-6" *ngFor="let  answer of quizQuestions[ractiveQuestion].possibilities;  let i=index" >
+							<h5 class="answer" [ngClass]="getAnswerClass(i)" > {{answer.answer}}
+							<p class="pull-right"*ngIf="i !==correctAnswer[ractiveQuestion] && i=== quizQuestions[ractiveQuestion].selected "   >Your Answer</p>
+							<p class="pull-right" *ngIf="i===correctAnswer[ractiveQuestion]" >Correct Answer</p>
+							</h5>
+						</div>
+					</div>
+
+						<div class="row"  *ngIf="quizQuestions[ractiveQuestion].type ==='image'" >
+		 				<div  class="col-sm-6" *ngFor="let  answer of quizQuestions[ractiveQuestion].possibilities;  let i=index" >
+		 					
+		 					<div  class="image-answer" [ngClass]="getAnswerClass(i)"  >
+		 						<img [src]="answer.answer"  >
+		 					</div>
+		 				</div>
+
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-warning btn-sm" (click)="backFact()" >Back of Fact</button>
+				</div>
+			</div>
+			
+		</div>
+	
+	
+
+
+</div>
